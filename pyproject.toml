@@ -1,0 +1,23 @@
+[project]
+name = "tarea1"
+version = "0.1.0"
+description = "Introducción a Ciencia de Datos - Tarea 1"
+authors = [
+    {name = "Nicole"}
+]
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "pandas>=2.0",
+    "matplotlib>=3.7",
+    "seaborn>=0.13",
+    "networkx>=3.0",
+    "datasets>=2.0",
+    "jupyter>=1.0",
+    "ipykernel>=6.0",
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
