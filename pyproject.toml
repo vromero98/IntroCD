@@ -5,7 +5,6 @@ description = "Introducción a Ciencia de Datos - Tarea 1"
 authors = [
     {name = "Nicole"}
 ]
-readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [
     "pandas>=2.0",
@@ -17,6 +16,9 @@ dependencies = [
     "ipykernel>=6.0",
 ]
 
+
+[tool.poetry]
+package-mode = false
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
