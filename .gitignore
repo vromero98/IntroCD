@@ -6,3 +6,10 @@ __pycache__/
 *.egg-info/
 dist/
 .env
+
+# Data files
+data/*
+!data/.gitkeep
+*.csv
+*.svg
+*.jpg
