@@ -13,3 +13,6 @@ data/*
 *.csv
 *.svg
 *.jpg
+
+# Figuras generadas
+figuras/
