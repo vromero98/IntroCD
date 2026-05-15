@@ -15,6 +15,7 @@ import matplotlib
 matplotlib.use('Agg')  # Backend sin GUI: permite correr el script en servidores.
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
+import missingno as msno
 import networkx as nx
 import numpy as np
 import pandas as pd
@@ -29,6 +30,7 @@ from src.utils import (
     clean_text,
     load_dataset,
     plot_top_words,
+    plot_wordclouds_by_source,
 )
 
 # ── Configuración global ──────────────────────────────────────────────────────
@@ -62,7 +64,18 @@ df_top_5['word_count'] = df_top_5['CleanText'].str.split().str.len()
 df_top_5['date_parsed'] = pd.to_datetime(df_top_5['date'], errors='coerce')
 df_top_5['year_month'] = df_top_5['date_parsed'].dt.to_period('M')
 
-# ── Figura 1: Distribución de artículos ──────────────────────────────────────
+# ── Figura 1: Matriz de nulidad ──────────────────────────────────────────────
+# Visualiza la distribución de valores faltantes por columna a lo largo de las
+# filas del dataset completo.
+print("fig_nulidad.png ...")
+fig, ax = plt.subplots(figsize=(12, 5))
+msno.matrix(df, ax=ax, sparkline=False, fontsize=11)
+ax.set_title('Matriz de nulidad', fontsize=14, pad=12)
+plt.tight_layout()
+plt.savefig(FIG_DIR / 'fig_nulidad.png')
+plt.close()
+
+# ── Figura 2: Distribución de artículos ──────────────────────────────────────
 # Gráfico de barras con la cantidad de artículos de cada uno de los cinco
 # medios seleccionados, con etiquetas numéricas sobre cada barra.
 print("fig_distribucion_pubs.png ...")
@@ -160,7 +173,15 @@ plt.tight_layout()
 plt.savefig(FIG_DIR / 'fig_top_words_2.png')
 plt.close()
 
-# ── Figura 4: Total de palabras + boxplot ────────────────────────────────────
+# ── Figura: Nubes de palabras por medio ──────────────────────────────────────
+# Una nube por cada uno de los cinco medios en una grilla 3x2.
+print("fig_wordclouds.png ...")
+fig_wc = plot_wordclouds_by_source(df_top_5, text_column='CleanText')
+fig_wc.suptitle('Nubes de palabras por medio de prensa', fontsize=16, y=1.02)
+fig_wc.savefig(FIG_DIR / 'fig_wordclouds.png')
+plt.close(fig_wc)
+
+# ── Figura: Total de palabras + boxplot ──────────────────────────────────────
 # Figura compuesta con dos paneles:
 #   - Izquierda: total acumulado de palabras por medio.
 #   - Derecha: distribución de la longitud de los artículos (sin outliers).
