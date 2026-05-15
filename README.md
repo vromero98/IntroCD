@@ -4,6 +4,10 @@ Introducción a la Ciencia de Datos · Maestría en Ciencia de Datos y Aprendiza
 
 Exploración y limpieza de un subconjunto del dataset *All The News 2.1*, con foco en los cinco medios de prensa anglosajones de mayor volumen (Reuters, The New York Times, CNBC, The Hill y People).
 
+## Informe
+
+El informe final de la tarea se encuentra en [`informe.pdf`](informe.pdf), en la raíz del repositorio.
+
 ## Estructura del proyecto
 
 ```
@@ -19,6 +23,7 @@ Tarea 1/
 ├── figuras/                      # Figuras PNG generadas por el script (no versionadas)
 ├── tarea1.ipynb                  # Notebook unificada — versión canónica que produce el informe
 ├── reproducir_informe.py         # Script que reproduce todas las figuras del informe
+├── informe.pdf                   # Informe final de la tarea
 ├── pyproject.toml                # Definición de dependencias (Poetry)
 ├── poetry.lock                   # Versiones bloqueadas
 └── README.md
