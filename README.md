@@ -4,26 +4,36 @@ Introducción a la Ciencia de Datos · Maestría en Ciencia de Datos y Aprendiza
 
 Exploración y limpieza de un subconjunto del dataset *All The News 2.1*, con foco en los cinco medios de prensa anglosajones de mayor volumen (Reuters, The New York Times, CNBC, The Hill y People).
 
+## Informe
+
+El informe final de la tarea se encuentra en [`informe.pdf`](informe.pdf), en la raíz del repositorio.
+
 ## Estructura del proyecto
 
 ```
 Tarea 1/
 ├── src/
 │   ├── __init__.py
-│   └── utils.py              # Constantes, carga de datos, clean_text, plot_top_words
+│   └── utils.py                  # Constantes, carga de datos, clean_text, plot_top_words, plot_wordclouds_by_source
+├── notebooks/
+│   ├── tarea1_ncastroman.ipynb   # Notebook de trabajo individual (Nicole)
+│   └── tarea1_vromero.ipynb      # Notebook de trabajo individual (Valeria)
 ├── data/
-│   └── sampled-data.csv      # Descargado automáticamente al correr la notebook (si no existe)
-├── figuras/                  # Figuras PNG generadas por el script (no versionadas)
-├── tarea1.ipynb              # Notebook principal de exploración y análisis
-├── reproducir_informe.py     # Script que reproduce todas las figuras del informe
-├── pyproject.toml            # Definición de dependencias (Poetry)
-├── poetry.lock               # Versiones bloqueadas
+│   └── sampled-data.csv          # Descargado automáticamente al correr la notebook (si no existe)
+├── figuras/                      # Figuras PNG generadas por el script (no versionadas)
+├── tarea1.ipynb                  # Notebook unificada — versión canónica que produce el informe
+├── reproducir_informe.py         # Script que reproduce todas las figuras del informe
+├── informe.pdf                   # Informe final de la tarea
+├── pyproject.toml                # Definición de dependencias (Poetry)
+├── poetry.lock                   # Versiones bloqueadas
 └── README.md
 ```
 
+Las notebooks individuales (`notebooks/`) quedan como referencia del trabajo paralelo de cada integrante. La versión canónica que coincide con el informe final es `tarea1.ipynb` en la raíz.
+
 ## Requisitos
 
-- Python ≥ 3.9
+- Python ≥ 3.10, < 3.13
 - [Poetry](https://python-poetry.org/) ≥ 2.0
 
 ## Instalación

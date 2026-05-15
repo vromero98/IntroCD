@@ -5,7 +5,7 @@ description = "Introducción a Ciencia de Datos - Tarea 1"
 authors = [
     {name = "Nicole"}
 ]
-requires-python = ">=3.9"
+requires-python = ">=3.10,<3.13"
 dependencies = [
     "pandas>=2.0",
     "matplotlib>=3.7",
@@ -15,6 +15,9 @@ dependencies = [
     "jupyter>=1.0",
     "ipykernel>=6.0",
     "plotly (>=6.7.0,<7.0.0)",
+    "missingno>=0.5",
+    "wordcloud>=1.9",
+    "ydata-profiling>=4.0",
 ]
 
 
