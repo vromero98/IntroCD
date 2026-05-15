@@ -7,13 +7,14 @@ Este módulo centraliza la lógica común utilizada tanto por
     - Normalización del texto de los artículos.
     - Constantes visuales: orden canónico de medios, paleta de colores,
       etiquetas, stopwords y parámetros por defecto.
-    - Función reutilizable para graficar las palabras más frecuentes por
-      medio.
+    - Funciones reutilizables para visualizar palabras más frecuentes y
+      nubes de palabras por medio.
 """
 
 from collections import Counter
 from pathlib import Path
 
+import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 import pandas as pd
 import seaborn as sns
@@ -100,10 +101,19 @@ def load_dataset(data_dir='data', filename='sampled-data.csv'):
 def clean_text(df, column_name):
     """Normaliza el texto de una columna del DataFrame.
 
-    Aplica una secuencia de transformaciones para preparar el texto para
-    análisis basado en bolsa de palabras: eliminación del dateline,
-    conversión a minúsculas, remoción de puntuación y números, y colapso
-    de espacios.
+    Aplica la siguiente secuencia de transformaciones para preparar el
+    texto para análisis basado en bolsa de palabras:
+
+        1. Elimina el contenido previo al primer salto de línea
+           (típicamente el dateline editorial).
+        2. Convierte a minúsculas.
+        3. Normaliza las variantes tipográficas de apóstrofo (curly,
+           backtick) al apóstrofe ASCII estándar.
+        4. Elimina puntuación y caracteres especiales, preservando los
+           apóstrofes (para mantener contracciones como ``it's``, ``don't``).
+        5. Elimina secuencias numéricas (años, cantidades, etc.).
+        6. Colapsa secuencias de espacios en blanco a un único espacio.
+        7. Elimina espacios al inicio y al final.
 
     Args:
         df (pd.DataFrame): DataFrame que contiene la columna de texto.
@@ -113,21 +123,18 @@ def clean_text(df, column_name):
     Returns:
         pd.Series: Serie con el texto normalizado.
     """
-    # Elimina la primera línea (típicamente el dateline editorial).
-    result = df[column_name].str.replace(r'^[^\n]*\n', '', regex=True)
-    result = result.str.lower()
-
-    # Reemplaza cada signo de puntuación o carácter especial por un espacio.
-    for punc in ['[', '\n', ',', ':', '?', '.', '!', ';', '(', ')', ']',
-                 '"', "'", '-', '/', '@', '#', '%', '&', '*', '+', '=',
-                 '<', '>', '|', '~', '^', '_', '{', '}', '\\']:
-        result = result.str.replace(punc, ' ', regex=False)
-
-    # Elimina secuencias numéricas (años, cantidades, etc.).
-    result = result.str.replace(r'\d+', ' ', regex=True)
-    # Colapsa espacios múltiples a uno solo.
-    result = result.str.replace(r'\s+', ' ', regex=True)
-    return result.str.strip()
+    return (
+        df[column_name]
+        .fillna('')
+        .astype(str)
+        .str.replace(r'^[^\n]*\n', '', regex=True)
+        .str.lower()
+        .str.replace(r"[‘’`]", "'", regex=True)
+        .str.replace(r"[^\w\s']", ' ', regex=True)
+        .str.replace(r'\d+', ' ', regex=True)
+        .str.replace(r'\s+', ' ', regex=True)
+        .str.strip()
+    )
 
 
 # ── Visualización ────────────────────────────────────────────────────────────
@@ -172,3 +179,62 @@ def plot_top_words(df, labels, axes, text_column='CleanText',
         ax.tick_params(axis='both', labelsize=12)
         ax.grid(True, axis='x', linestyle='--', linewidth=0.7, alpha=0.8)
         sns.despine(ax=ax)
+
+
+def plot_wordclouds_by_source(df, text_column='CleanText',
+                              source_column='publication',
+                              labels=None, max_words=150,
+                              colormap='viridis'):
+    """Dibuja una nube de palabras por medio en una grilla compartida.
+
+    Para cada medio listado en ``labels`` genera una nube de palabras
+    usando ``WordCloud`` y la agrega a un panel de la figura. El orden
+    de los paneles sigue ``labels`` (por defecto, el orden canónico
+    definido en ``ORDER``).
+
+    Args:
+        df (pd.DataFrame): DataFrame con las columnas ``source_column`` y
+            ``text_column``.
+        text_column (str): Columna con el texto ya limpio.
+        source_column (str): Columna que identifica el medio.
+        labels (list[str] | None): Lista de etiquetas cortas de medios a
+            graficar; si es ``None`` se usa ``ORDER``.
+        max_words (int): Máximo de palabras a mostrar por nube.
+        colormap (str): Nombre del colormap de matplotlib para colorear
+            las palabras.
+
+    Returns:
+        matplotlib.figure.Figure: Figura con la grilla de nubes.
+    """
+    # Import diferido: ``wordcloud`` solo se requiere si se usa esta función.
+    from wordcloud import WordCloud
+
+    if labels is None:
+        labels = ORDER
+    n = len(labels)
+    cols = 2
+    rows = (n + cols - 1) // cols
+
+    fig, axes = plt.subplots(rows, cols, figsize=(12, 4 * rows))
+    axes = axes.flatten()
+
+    for i, lbl in enumerate(labels):
+        pub = LABEL_TO_PUB[lbl]
+        text = ' '.join(
+            df[df[source_column] == pub][text_column].dropna().astype(str)
+        )
+        wc = WordCloud(
+            width=800, height=400, background_color='white',
+            colormap=colormap, max_words=max_words,
+            collocations=False, stopwords=STOPWORDS,
+        ).generate(text)
+        axes[i].imshow(wc, interpolation='bilinear')
+        axes[i].set_title(lbl, fontsize=14, fontweight='bold')
+        axes[i].axis('off')
+
+    # Apaga los ejes sobrantes (si el número de medios es impar).
+    for j in range(n, len(axes)):
+        axes[j].axis('off')
+
+    fig.subplots_adjust(hspace=0.15, wspace=0.05)
+    return fig
