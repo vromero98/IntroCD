@@ -1,0 +1,18 @@
+.venv/
+__pycache__/
+*.pyc
+.DS_Store
+.ipynb_checkpoints/
+*.egg-info/
+dist/
+.env
+
+# Data files
+data/*
+!data/.gitkeep
+*.csv
+*.svg
+*.jpg
+
+# Figuras generadas
+figuras/
