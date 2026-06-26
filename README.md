@@ -5,7 +5,7 @@ Maestría en Ciencia de Datos y Aprendizaje Automático · Facultad de Ingenier�
 Este repositorio reúne las dos primeras tareas del curso, ambas sobre un subconjunto del dataset *All The News 2.1* de noticias de medios de prensa anglosajones. La Tarea 2 es la continuación de la Tarea 1, por lo que reutiliza los mismos datos y parte de su código.
 
 - **Tarea 1 — Exploración y limpieza de datos:** análisis de valores nulos, visualización temporal, limpieza de texto y conteo de palabras sobre los cinco medios de mayor volumen (Reuters, The New York Times, CNBC, The Hill y People).
-- **Tarea 2 — Representación de texto y clasificación de medios:** representación numérica del texto (*bag of words* y TF-IDF), visualización con PCA y entrenamiento de modelos de clasificación (Multinomial Naive Bayes y Regresión Logística) para predecir el medio de prensa a partir del artículo.
+- **Tarea 2 — Representación de texto y clasificación de medios:** representación numérica del texto (*bag of words* y TF-IDF), visualización con PCA y entrenamiento de modelos de clasificación (Multinomial Naive Bayes y una SVM lineal) para predecir el medio de prensa a partir del artículo.
 
 ## Informes
 
@@ -26,9 +26,10 @@ Cada tarea tiene su informe final en PDF, que es el principal entregable:
 │   ├── notebooks/                    # Notebooks individuales de cada integrante (referencia)
 │   └── publications_data_profiling_report.html
 ├── tarea2/
-│   ├── tarea2.ipynb                  # Representación de texto, PCA y modelos de clasificación
+│   ├── tarea2.ipynb                  # Notebook unificada (representación de texto, PCA y modelos)
 │   ├── informe.pdf                   # Informe final de la Tarea 2
-│   └── reproducir_figuras.py         # Reproduce las figuras del informe (PDF, viridis)
+│   ├── reproducir_figuras.py         # Reproduce las figuras del informe (PDF, viridis)
+│   └── notebooks/                    # Notebooks individuales de cada integrante (referencia)
 ├── data/                             # Cache del dataset (se descarga al correr; no versionado)
 ├── pyproject.toml                    # Dependencias compartidas (Poetry)
 ├── poetry.lock
