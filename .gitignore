@@ -7,12 +7,12 @@ __pycache__/
 dist/
 .env
 
-# Data files
-data/*
-!data/.gitkeep
+# Datos descargados en tiempo de ejecución (en cualquier subcarpeta)
+**/data/*
+!**/data/.gitkeep
 *.csv
 *.svg
 *.jpg
 
-# Figuras generadas
+# Figuras generadas (se regeneran con los scripts; no se versionan)
 figuras/
