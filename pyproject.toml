@@ -1,7 +1,7 @@
 [project]
-name = "tarea1"
-version = "0.1.0"
-description = "Introducción a Ciencia de Datos - Tarea 1"
+name = "introcd"
+version = "0.2.0"
+description = "Introducción a la Ciencia de Datos - Tareas 1 y 2"
 authors = [
     {name = "Nicole"}
 ]
@@ -18,6 +18,7 @@ dependencies = [
     "missingno>=0.5",
     "wordcloud>=1.9",
     "ydata-profiling>=4.0",
+    "scikit-learn>=1.3",
 ]
 
 
