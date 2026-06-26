@@ -98,6 +98,23 @@ def load_dataset(data_dir='data', filename='sampled-data.csv'):
 
 
 # ── Limpieza de texto ────────────────────────────────────────────────────────
+def load_dataset_hf(data_dir='../data'):
+    """Carga el dataset desde HuggingFace Hub usando el cache nativo de la libreria.
+
+    A diferencia de load_dataset, no genera un CSV intermedio: usa el cache en
+    formato Arrow de HuggingFace.
+
+    Args:
+        data_dir (str | Path): Directorio de cache para HuggingFace.
+
+    Returns:
+        pd.DataFrame: Dataset cargado.
+    """
+    from datasets import load_dataset as hf_load_dataset
+    ds = hf_load_dataset(HF_DATASET_ID, split='train', cache_dir=str(data_dir))
+    return ds.to_pandas()
+
+
 def clean_text(df, column_name):
     """Normaliza el texto de una columna del DataFrame.
 
