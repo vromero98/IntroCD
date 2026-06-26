@@ -1,35 +1,40 @@
-# Tarea 1 — Exploración y Limpieza de Datos de Noticias
+# Introducción a la Ciencia de Datos — Tareas 1 y 2
 
-Introducción a la Ciencia de Datos · Maestría en Ciencia de Datos y Aprendizaje Automático · FIng (UdelaR).
+Maestría en Ciencia de Datos y Aprendizaje Automático · Facultad de Ingeniería (UdelaR).
 
-Exploración y limpieza de un subconjunto del dataset *All The News 2.1*, con foco en los cinco medios de prensa anglosajones de mayor volumen (Reuters, The New York Times, CNBC, The Hill y People).
+Este repositorio reúne las dos primeras tareas del curso, ambas sobre un subconjunto del dataset *All The News 2.1* de noticias de medios de prensa anglosajones. La Tarea 2 es la continuación de la Tarea 1, por lo que reutiliza los mismos datos y parte de su código.
 
-## Informe
+- **Tarea 1 — Exploración y limpieza de datos:** análisis de valores nulos, visualización temporal, limpieza de texto y conteo de palabras sobre los cinco medios de mayor volumen (Reuters, The New York Times, CNBC, The Hill y People).
+- **Tarea 2 — Representación de texto y clasificación de medios:** representación numérica del texto (*bag of words* y TF-IDF), visualización con PCA y entrenamiento de modelos de clasificación (Multinomial Naive Bayes y una SVM lineal) para predecir el medio de prensa a partir del artículo.
 
-El informe final de la tarea se encuentra en [`informe.pdf`](informe.pdf), en la raíz del repositorio.
+## Informes
 
-## Estructura del proyecto
+Cada tarea tiene su informe final en PDF, que es el principal entregable:
+
+- Tarea 1: [`tarea1/informe.pdf`](tarea1/informe.pdf)
+- Tarea 2: [`tarea2/informe.pdf`](tarea2/informe.pdf)
+
+## Estructura del repositorio
 
 ```
-Tarea 1/
-├── src/
-│   ├── __init__.py
-│   └── utils.py                  # Constantes, carga de datos, clean_text, plot_top_words, plot_wordclouds_by_source
-├── notebooks/
-│   ├── tarea1_ncastroman.ipynb   # Notebook de trabajo individual (Nicole)
-│   └── tarea1_vromero.ipynb      # Notebook de trabajo individual (Valeria)
-├── data/
-│   └── sampled-data.csv          # Descargado automáticamente al correr la notebook (si no existe)
-├── figuras/                      # Figuras PNG generadas por el script (no versionadas)
-├── tarea1.ipynb                  # Notebook unificada — versión canónica que produce el informe
-├── reproducir_informe.py         # Script que reproduce todas las figuras del informe
-├── informe.pdf                   # Informe final de la tarea
-├── pyproject.toml                # Definición de dependencias (Poetry)
-├── poetry.lock                   # Versiones bloqueadas
+.
+├── tarea1/
+│   ├── tarea1.ipynb                  # Notebook unificada (versión que produce el informe)
+│   ├── informe.pdf                   # Informe final de la Tarea 1
+│   ├── reproducir_informe.py         # Reproduce las figuras del informe
+│   ├── src/                          # Carga de datos, clean_text y helpers de visualización
+│   ├── notebooks/                    # Notebooks individuales de cada integrante (referencia)
+│   └── publications_data_profiling_report.html
+├── tarea2/
+│   ├── tarea2.ipynb                  # Notebook unificada (representación de texto, PCA y modelos)
+│   ├── informe.pdf                   # Informe final de la Tarea 2
+│   ├── reproducir_figuras.py         # Reproduce las figuras del informe (PDF, viridis)
+│   └── notebooks/                    # Notebooks individuales de cada integrante (referencia)
+├── data/                             # Cache del dataset (se descarga al correr; no versionado)
+├── pyproject.toml                    # Dependencias compartidas (Poetry)
+├── poetry.lock
 └── README.md
 ```
-
-Las notebooks individuales (`notebooks/`) quedan como referencia del trabajo paralelo de cada integrante. La versión canónica que coincide con el informe final es `tarea1.ipynb` en la raíz.
 
 ## Requisitos
 
@@ -38,58 +43,42 @@ Las notebooks individuales (`notebooks/`) quedan como referencia del trabajo par
 
 ## Instalación
 
-1. **Instalar Poetry** (si no lo tenés):
+```bash
+git clone <url-del-repo>
+cd IntroCD
+poetry install
+```
 
-   ```bash
-   curl -sSL https://install.python-poetry.org | python3 -
-   ```
-
-2. **Clonar el repositorio y entrar al directorio:**
-
-   ```bash
-   git clone <url-del-repo>
-   cd "Tarea 1"
-   ```
-
-3. **Instalar dependencias** con Poetry. El archivo `poetry.toml` ya está configurado para crear el entorno virtual dentro del proyecto (`.venv/`):
-
-   ```bash
-   poetry install
-   ```
-
-4. **Activar el entorno virtual** (opcional, para correr comandos sin el prefijo `poetry run`):
-
-   ```bash
-   source .venv/bin/activate   # macOS / Linux
-   .venv\Scripts\activate      # Windows
-   ```
+El archivo `poetry.toml` ya está configurado para crear el entorno virtual dentro del proyecto (`.venv/`). Las dependencias son compartidas por ambas tareas.
 
 ## Uso
 
-### Notebook interactiva
+`poetry run` funciona desde cualquier carpeta del repositorio; cada tarea se corre desde su propio directorio.
+
+### Tarea 1
 
 ```bash
-poetry run jupyter notebook tarea1.ipynb
+cd tarea1
+poetry run jupyter notebook tarea1.ipynb     # análisis interactivo
+poetry run python reproducir_informe.py      # regenera las figuras (PNG) en figuras/
 ```
 
-La primera vez que se ejecute la celda de carga de datos, el dataset se descargará automáticamente desde HuggingFace Hub y se guardará como `data/sampled-data.csv`. En ejecuciones posteriores se carga directamente del archivo local.
-
-### Reproducir el informe (script)
-
-Para regenerar todas las figuras del informe en formato PNG:
+### Tarea 2
 
 ```bash
-poetry run python reproducir_informe.py
+cd tarea2
+poetry run jupyter notebook tarea2.ipynb     # representación de texto + modelos
+poetry run python reproducir_figuras.py      # regenera las figuras (PDF) en figuras/
 ```
 
-Las imágenes se guardan en la carpeta `figuras/`.
+La primera vez que se ejecute la celda de carga, el dataset se descarga automáticamente desde HuggingFace Hub. El script `reproducir_figuras.py` regenera las figuras del informe en la carpeta `figuras/`.
 
 ## Dataset
 
-El análisis utiliza un muestreo del dataset *All The News 2.1*, provisto por la cátedra:
+Muestreo del dataset *All The News 2.1* provisto por la cátedra:
 
-- Dataset original: <https://huggingface.co/datasets/rjac/all-the-news-2-1-Component-one>
-- Muestreo utilizado: <https://huggingface.co/datasets/tomas-gr/all-the-news-2-1-Component-one-sampled>
+- Original: <https://huggingface.co/datasets/rjac/all-the-news-2-1-Component-one>
+- Muestreo: <https://huggingface.co/datasets/tomas-gr/all-the-news-2-1-Component-one-sampled>
 
 Contiene 30.213 artículos publicados entre 2016 y comienzos de 2020 en 26 medios de prensa anglosajones.
 
@@ -100,4 +89,4 @@ Contiene 30.213 artículos publicados entre 2016 y comienzos de 2020 en 26 medio
 
 ## Nota sobre el uso de asistentes de IA
 
-La redacción del informe y el código de análisis fueron desarrollados con la asistencia de Claude (Anthropic). Las decisiones metodológicas, la interpretación de los resultados y la revisión final del contenido son responsabilidad de las autoras.
+La redacción de los informes y el código de análisis fueron desarrollados con la asistencia de Claude (Anthropic). Las decisiones metodológicas, la interpretación de los resultados y la revisión final del contenido son responsabilidad de las autoras.
